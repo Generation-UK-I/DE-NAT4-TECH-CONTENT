@@ -208,7 +208,7 @@ def test_answer():
 6. Select 'Choose a Testing Framework' then in the Quick Access bar choose pytest.
 7. Once loaded you should see a line representing your working directory, if you drill down you'll see your `test_sample.py` file, and down again to see the `test_answer` function which was created, and recognised by pytest.
 
-![](./img/vsc-tests.jpg)
+IMAGE
 
 In our case there is only one `test_*.py` file, and only one `test_*` function, but if we had multiple we could run the individual tests, all the tests in a file, or all `test_*.py` files in a directory from here.
 
