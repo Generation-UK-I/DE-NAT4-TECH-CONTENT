@@ -238,8 +238,36 @@ Our final task to clean the dataset is to deal with the uniformity issue in the 
 
 ---
 
-You should now have fixed all of the quality issues in the dataset.
+### Some More Useful Pandas Methods
 
-Continue onto the next exercise, using pandas with a much bigger dataset.
+#### Duplicate Detection
+
+```py
+sales_data.duplicated()
+```
+
+#### Duplicate Removal
+
+```py
+sales_data.drop_duplicates
+```
+
+#### Inspect Data Types
+
+```py
+sales_data.dtypes
+```
+
+#### Convert Data Types
+
+```py
+sales_data['age'] = sales_data['age'].astype('float')
+```
+
+---
+
+You should have now fixed all of the quality issues in the dataset.
+
+Continue onto the next exercise to use pandas with a much bigger dataset.
 
 [Exercise 2](./data-cleansing-exercise-bonus.md)
