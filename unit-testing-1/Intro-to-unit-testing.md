@@ -205,7 +205,7 @@ def test_answer():
 
     The default method of pressing the 'run' button doesn't initialise pytest. To run our test we can run: `pytest test_sample.py` from the Terminal.
 5. We can also use VSCs built in testing interface. Down the left hand side select the Testing option (conical flask - sciency!)
-6. Select 'Choose a Testing Framework' then in the Quick Access bar choose pytest.
+6. Select 'Configure Python Tests' then in the Quick Access bar choose pytest, then select `. (root directory)`.
 7. Once loaded you should see a line representing your working directory, if you drill down you'll see your `test_sample.py` file, and down again to see the `test_answer` function which was created, and recognised by pytest.
 
 IMAGE
