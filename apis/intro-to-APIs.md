@@ -243,6 +243,10 @@ There are loads of python API modules you can use, two of the more common ones a
 
 ## Exercises
 
-1. Use a GUI tool called POSTMAN to call data from a public API
-2. Build an app to connect to a public API
-3. Build your own API with Flask
+1. [Use a GUI tool called POSTMAN to call data from a public API](./exercises/apis-exercise-rick-and-morty.md)
+
+  - Sign up for POSTMAN using your Google account, and then use the web-version. No need to install the desktop client.
+
+2. [Build an app to connect to a public API](./CaaS/cat-as-a-service.md)
+
+3. [Build your own API with Flask](./exercises/apis-exercise-python-api.md)
