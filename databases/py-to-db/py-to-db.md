@@ -23,7 +23,7 @@ A SQL database solves all of these by providing:
 
 ### Setup
 
-Deploy a Postgres database and Adminer management front-end by following the [instructions here](./Deploy-postgres-adminer.md).
+Deploy a Postgres database and Adminer management front-end by following the [instructions here](//databases/Deploy-postgres-adminer.md).
 
 Technically we don't need Adminer, but it's useful for quickly verifying that your code worked, such as seeing your new table appearing.
 
