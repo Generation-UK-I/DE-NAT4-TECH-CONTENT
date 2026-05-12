@@ -1,0 +1,9 @@
+# This is a basic script to show how shebang works
+
+echo "Welcome to Shellassic Park!"
+DINOSAUR="T-Rex"
+echo "Our star attraction today is the $DINOSAUR."
+
+# Trying a simple command to show shebang in action
+DATE=$(date)
+echo "The current date and time is: $DATE"
