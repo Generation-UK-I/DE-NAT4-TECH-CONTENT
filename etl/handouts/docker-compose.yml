@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  db:
+    # Users on M1 Macs need to use mariddb instead of postgres
+    image: docker.io/postgres:latest
+    container_name: my-postgres
+    volumes: # run all *.sql files in here on bootup in lexicographical order
+      - "./db-scripts:/docker-entrypoint-initdb.d"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  adminer:
+    image: docker.io/adminer
+    container_name: my-adminer
+    restart: always
+    ports:
+      - 8080:8080

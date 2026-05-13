@@ -1,0 +1,3 @@
+# using v2 (not the latest v3) as this is good for windows, ubuntu and mac
+psycopg2-binary
+python-dotenv

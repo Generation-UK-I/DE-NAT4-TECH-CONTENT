@@ -1,0 +1,8 @@
+cffi==1.14.4
+cryptography==41.0.0
+pycparser==2.20
+psycopg2-binary
+python-dotenv
+six==1.15.0
+pandas==1.1.4
+sqlalchemy==1.4.39
