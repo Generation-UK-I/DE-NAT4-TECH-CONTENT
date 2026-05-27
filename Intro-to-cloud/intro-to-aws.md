@@ -204,11 +204,27 @@ All of these key components in our networks exist in the cloud, and more. It's j
 
 In our own cloud account we can create a network using the VPC service, which creates a 'virtual network', which we call a VPC, in the cloud. It is a logically isolated environment into which you can deploy your infrastructure resources.
 
-The VPC supports the same addressing schemes* which we've used for decades (IPv4 with support for IPv6), so there will be no issues with traffic between existing and legacy systems, and your cloud resources.
+The VPC supports the same addressing schemes* which we've used for decades (IPv4 with support for IPv6), so there will be no issues with traffic between existing & legacy on-prem systems, and your cloud resources.
 
 >*Although with a smaller range of available addresses.
 
 We can also segment our VPC into further logically isolated **subnets**, which allows for greater control over resource placement, and traffic management as mentioned above.
+
+### Route53 (DNS)
+
+The Domain Name Service (DNS) is basically the global '*address book*' for the internet, it allows us to look up a human-friendly domain name, and receive the corresponding IP address for that target.
+
+Just like your home needs a unique address in order to receive post, computers on the internet need a unique address in order to send and receive traffic, this address is called an IP (internet protocol) address.
+
+We'll look into IP addressing in more depth in our networking sessions, for now just know that an IPv4 address looks like this: `213.47.103.73`. Humans are not good at memorising numbers, so if every web server on the internet required you to enter an address like that, we would probably only know about 4 or 5 websites each.
+
+DNS provides us with a system that maps human friendly domain names, to IP addresses, so we can type in an address like www.bbc.co.uk or...
+
+
+Route 53 is AWS' Domain Name Service (DNS) offering, 
+
+
+**... to be completed**
 
 ## Networking Lab (45 mins)
 
