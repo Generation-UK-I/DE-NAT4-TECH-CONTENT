@@ -111,3 +111,16 @@ Some of the AWS services offering NoSQL databases include:
 |Graph database|Amazon Neptune|
 
 ### Dynamo DB
+
+Dynamo DB is AWS' primary NoSQL database offering, it is a fully managed, serverless key-value store, providing response times in the milliseconds, which can massively scale for millions of global users.
+
+Dynamo DB provides schema-less tables in which to store your items, but items do not need to be similar, each item can have totally different attributes (values).
+
+Architecturally, data in a table is split across multiple partitions, which can all be searched in parallel for the value you need, which is where some of the speed comes from.
+
+Each item does need a PRIMARY KEY to uniquely identify it, but this also acts as a PARTITION KEY to identify the partition the item is located in.
+
+We can also use a COMPOSITE KEY which in this context comprises a PARTITION and SORT KEY, which defines the order items or sorted within the partition.
+
+As a fully managed service, AWS takes care of hardware provisioning, maintenance and patching, availability, and scaling. Data is encrypted at rest by default, and it integrates with AWS Identity and Access Management for access control.
+

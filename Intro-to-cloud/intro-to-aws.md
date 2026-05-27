@@ -178,27 +178,12 @@ You may use S3 buckets for various purposes in your pipeline, therefore to get y
 
 We will take a look at how networks actually work in an upcoming session, but for now it is worth understanding how we translate the physical cables, switches, and routers from our on-premise infrastructure, to the cloud.
 
-The simple answer is we don't really need to do anything differently. Some of the key components we consider when building networks are:
+The simple answer is we don't really need to do anything differently. All of the key components in our networks exist in the cloud, and more. It's just that they're logical, not physical.
 
-- **Cables**: Used to physically connect our devices together so they may access the network.
-  - Typically copper Ethernet, but on-prem fibre-optic is becoming more common.
-  - For our purposes disregard wifi, we never connect a server to the network with wifi.
-- **Switches**: These devices include lots of ports into which our devices are connected via cables. So switches effectively 'form' the network.
-  - The switch has lots of network ports, it receives traffic in one port, and forwards it out another
-  - Almost all network traffic passes through switches.
-- **Routers**: As networks become complex, we need to manage where traffic can go, and how it gets there For example the router provides a **route** to the internet.
-  - The router allows you to define routes traffic can take, which allows you to permit and deny it. For example, you may want to prevent traffic from reaching an segment of your network (a **subnet**) containing resources with sensitive data.
-- **Firewalls**: These devices are used to manage the traffic that is allowed access your network and resources. There are some advanced mechanisms, but at the basic level you can define ports, protocols, and IP addresses which are permitted or denyed access.
-  - For example, a web server only operates on `HTTP` and/or `HTTPS`, the firewall allows you to block all traffic except this type.
-
-All of these key components in our networks exist in the cloud, and more. It's just that they're logical, not physical.
-
-- Cables aren't required of course, but every resource we deploy is automatically connected to our network in the cloud (VPC), otherwise we couldn't access it!
-- In AWS we can use `Route Tables` to define the routes we add to our physical router
+- Cables aren't required of course, but every resource we deploy is automatically connected to our network in the cloud (**VPC**), otherwise we couldn't access it!
+- In AWS we can use **Route Tables** to define the routes we add to our physical router
 - Since cables aren't needed, we don't need to worry about connecting devices with switches.
-  - There is some advanced switch functionality which can be replicated with specialist AWS services.
-- Managing traffic in our networks is a crucial requirement, therefore we can implement basic functionality with Security Groups which can be created and configured easily.
-  - Advanced firewall functionality is offered by additional AWS services.
+- Managing traffic in our networks is a crucial requirement, therefore we can implement basic functionality with **Security Groups** which can be created and configured easily.
 
 ### Virtual Private Cloud (VPC)
 
@@ -206,25 +191,26 @@ In our own cloud account we can create a network using the VPC service, which cr
 
 The VPC supports the same addressing schemes* which we've used for decades (IPv4 with support for IPv6), so there will be no issues with traffic between existing & legacy on-prem systems, and your cloud resources.
 
->*Although with a smaller range of available addresses.
+>*The IPv4 range is divided into public and private ranges, and these are defined by an international standard called RFC1918. AWS and VPCs adhere to the same system, although with a smaller range of available addresses.
 
 We can also segment our VPC into further logically isolated **subnets**, which allows for greater control over resource placement, and traffic management as mentioned above.
 
-### Route53 (DNS)
+### Route 53 and DNS
 
-The Domain Name Service (DNS) is basically the global '*address book*' for the internet, it allows us to look up a human-friendly domain name, and receive the corresponding IP address for that target.
+We'll look into how Domain Name Service (DNS) and IP addressing works in our networking sessions, for now just know that an IPv4 address looks like this: `213.47.103.73`. Humans are not good at memorising numbers, so if every web server on the internet required you to enter an address like that, we would probably only know about 4 or 5 websites each.
 
-Just like your home needs a unique address in order to receive post, computers on the internet need a unique address in order to send and receive traffic, this address is called an IP (internet protocol) address.
+DNS provides us with a system that maps human friendly domain names, to IP addresses, so we can type in an address like `www.bbc.co.uk` or `uk.generation.org`, and the correct IP address is looked up for us so that our request can reach, in this case the web servers.
 
-We'll look into IP addressing in more depth in our networking sessions, for now just know that an IPv4 address looks like this: `213.47.103.73`. Humans are not good at memorising numbers, so if every web server on the internet required you to enter an address like that, we would probably only know about 4 or 5 websites each.
+**Route 53** is AWS' DNS offering, it provides various useful features:
 
-DNS provides us with a system that maps human friendly domain names, to IP addresses, so we can type in an address like www.bbc.co.uk or...
-
-
-Route 53 is AWS' Domain Name Service (DNS) offering, 
-
-
-**... to be completed**
+- DNS Record management: Create DNS records to map public and private domain names to the IP addresses (or endpoints) of your services.
+- **Domain Registrar**: Allows you to purchase human-friendly domain names which you can map to your resources. Your registrar *registers* your domain in the global DNS hierarchy, so that someone else cannot purchase the same name from another provider.
+- **Health Checks**: Route 53 sends periodic health checks which are just simple requests against a specified resource, and if a response is not received the target is considered unhealthy, and traffic will no longer be directed to it.
+  - Commonly you will have a **failover** record pointing to a secondary resource, so when the primary target becomes unhealthy Route 53 automatically redirects the traffic.
+- **Routing policies**: Rather than simply looking up a domain name and receiving a specific IP address, you can define the address that is returned when you have multiple resources which could service the request. Some examples include:
+  - **Latency-based** routing: The DNS request will be directed to the target which will offer the lowest latency.
+  - **Geo-location** routing: Responds to requests with a target that is in a particular geographic location. Often it's' used to ensure that the requesting user is directed to a site with the correct language, or currency, and so on.
+  - **Weighted routing**: Allows you to split traffic between targets by weight/percentage. This could be useful if you're balancing traffic between un-equal servers, so the less powerful one may only receive 25% of the traffic, for example.
 
 ## Networking Lab (45 mins)
 

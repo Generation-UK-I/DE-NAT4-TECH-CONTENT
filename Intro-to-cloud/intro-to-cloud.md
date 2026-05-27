@@ -27,7 +27,7 @@ A data center is simply a building which is custom designed for installing IT in
 
 Data centers, especially those operated by cloud service providers, are highly secure, all staff should be highly vetted, and even the locations are not really publicly disclosed. This is because they need their customers to trust that their assets and resources are safe. Nobody, not even the cloud provider, should be able to access a customer's data.
 
-**Task**: Spend 15 minutes exploring this [virtual tour of a data center](https://datacenters.microsoft.com/globe/explore/datacenter/)
+**Task**: Spend 15 minutes exploring this [virtual tour of a data center](https://datacenters.microsoft.com/tour/lobby/)
 
 ### Cloud Billing
 
