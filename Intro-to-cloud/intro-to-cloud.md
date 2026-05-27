@@ -17,6 +17,8 @@ Beyond making computing resources more accessible, there are lots of benefits to
 
 ### Data Centers
 
+![dc](./img/datacenter.jpg)
+
 Although we can install our IT hardware anywhere we want, many small businesses will start by deploying all of their servers and infrastructure equipment in a 'server cupboard' or small room. This may suffice for the short term, but as the organisation grows you quickly hit problems. You may not have the space to continue adding hardware; As your requirements grow the premises may require significant changes to the building to accommodate things like HVAC for all of the servers, higher capacity electrical infrastructure, and simply adding more users with desktops/laptops requiring additional network connections or wireless networks to be deployed.
 
 A data center is simply a building which is custom designed for installing IT infrastructure. The focus is not upon designing a building which makes humans happy, with break rooms, and canteens, etc. It's designed to make computers happy, with extensive networking, power, cooling, easy access, everything a server needs.
