@@ -58,11 +58,13 @@ Follow the guide which best matches your setup [here](https://docs.aws.amazon.co
 We will use a command called `aws sso` to handle logging into AWS via the CLI.
 
 - On a terminal, run `aws configure sso`
+  - If using Linux terminal: run `aws configure sso --use-device-code`
+  - Open the provided URL, and enter the code displayed in the terminal.
 - When it asks for `SSO session name`, enter a reasonable name, such as `de-course`
 - Enter your SSO (_Single Sign-On_) URL (if you don't know it, your instructor will be able to tell you - it will likely be something like `https://<bootcamp-name>.awsapps.com/start#/`)
 - Enter the SSO Region, which should be `eu-west-1`
 - When it asks for _SSO registration scopes_, hit enter
-- A webpage will open asking you to sign into the AWS CLI, click the `*Sign in to AWS CLI*` button
+- For Windows or Mac a webpage will open asking you to sign into the AWS CLI, click the `*Sign in to AWS CLI*` button
 - Looking back at your terminal, you will see some text which looks something like this:
    > Using the account ID _xxxxxxxxxxxx_<br />
    > The only role available to you is: StudentAccess <br />
@@ -81,7 +83,7 @@ You can log out of your SSO any time by running `aws sso logout` in your termina
 
 Use your new account to complete the [S3 CLI Lab](./aws-03-console-s3-exercise.md)
 
-### Delete everything
+### After the Lab Delete everything
 
 Once you have completed the lab...
 
