@@ -73,9 +73,9 @@ We will use a command called `aws sso` to handle logging into AWS via the CLI.
 - When it asks for _CLI default output format_, enter `json`
 - When it asks for _CLI profile name_, enter the same name as above e.g. `de-course`
 - Check your login works
-  - Run `aws sso login --profile <profile-name>` in your terminal (i.e. use the _CLI profile name_ you entered above)
+  - Run `aws sso login --profile=<profile-name> --use-device-code` in your terminal (i.e. use the _CLI profile name_ you entered above)
 
-You can now login any time by running `aws sso login --profile <profile-name>` in your terminal.
+You can now login any time by running `aws sso login --profile=<profile-name> --use-device-code` in your terminal.
 
 You can log out of your SSO any time by running `aws sso logout` in your terminal.
 
