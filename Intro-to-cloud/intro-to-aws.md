@@ -178,39 +178,24 @@ You may use S3 buckets for various purposes in your pipeline, therefore to get y
 
 We will take a look at how networks actually work in an upcoming session, but for now it is worth understanding how we translate the physical cables, switches, and routers from our on-premise infrastructure, to the cloud.
 
-The simple answer is we don't really need to do anything differently. All of the key components in our networks exist in the cloud, and more. It's just that they're logical, not physical.
+The simple answer is we don't really need to do anything differently. Some of the key components we consider when building networks are:
+
+All of the key components in our networks exist in the cloud, and more. It's just that they're logical, not physical.
 
 - Cables aren't required of course, but every resource we deploy is automatically connected to our network in the cloud (**VPC**), otherwise we couldn't access it!
-- In AWS we can use **Route Tables** to define the routes we add to our physical router
+- In AWS we can use **Route Tables** to define the routes we would add to our physical router
 - Since cables aren't needed, we don't need to worry about connecting devices with switches.
 - Managing traffic in our networks is a crucial requirement, therefore we can implement basic functionality with **Security Groups** which can be created and configured easily.
 
 ### Virtual Private Cloud (VPC)
 
-In our own cloud account we can create a network using the VPC service, which creates a 'virtual network', which we call a VPC, in the cloud. It is a logically isolated environment into which you can deploy your infrastructure resources.
+In our own cloud account we can create a network using the VPC service, which creates a '*virtual network*', which we call a VPC, in the cloud. It is a logically isolated environment into which you can deploy your infrastructure resources.
 
-The VPC supports the same addressing schemes* which we've used for decades (IPv4 with support for IPv6), so there will be no issues with traffic between existing & legacy on-prem systems, and your cloud resources.
+The VPC supports the same addressing schemes* which we've used for decades (**IPv4** with support for **IPv6**), so there will be no issues with traffic between existing and legacy systems, and your cloud resources.
 
->*The IPv4 range is divided into public and private ranges, and these are defined by an international standard called RFC1918. AWS and VPCs adhere to the same system, although with a smaller range of available addresses.
+>*Although with a smaller range of available addresses.
 
 We can also segment our VPC into further logically isolated **subnets**, which allows for greater control over resource placement, and traffic management as mentioned above.
-
-### Route 53 and DNS
-
-We'll look into how Domain Name Service (DNS) and IP addressing works in our networking sessions, for now just know that an IPv4 address looks like this: `213.47.103.73`. Humans are not good at memorising numbers, so if every web server on the internet required you to enter an address like that, we would probably only know about 4 or 5 websites each.
-
-DNS provides us with a system that maps human friendly domain names, to IP addresses, so we can type in an address like `www.bbc.co.uk` or `uk.generation.org`, and the correct IP address is looked up for us so that our request can reach, in this case the web servers.
-
-**Route 53** is AWS' DNS offering, it provides various useful features:
-
-- DNS Record management: Create DNS records to map public and private domain names to the IP addresses (or endpoints) of your services.
-- **Domain Registrar**: Allows you to purchase human-friendly domain names which you can map to your resources. Your registrar *registers* your domain in the global DNS hierarchy, so that someone else cannot purchase the same name from another provider.
-- **Health Checks**: Route 53 sends periodic health checks which are just simple requests against a specified resource, and if a response is not received the target is considered unhealthy, and traffic will no longer be directed to it.
-  - Commonly you will have a **failover** record pointing to a secondary resource, so when the primary target becomes unhealthy Route 53 automatically redirects the traffic.
-- **Routing policies**: Rather than simply looking up a domain name and receiving a specific IP address, you can define the address that is returned when you have multiple resources which could service the request. Some examples include:
-  - **Latency-based** routing: The DNS request will be directed to the target which will offer the lowest latency.
-  - **Geo-location** routing: Responds to requests with a target that is in a particular geographic location. Often it's' used to ensure that the requesting user is directed to a site with the correct language, or currency, and so on.
-  - **Weighted routing**: Allows you to split traffic between targets by weight/percentage. This could be useful if you're balancing traffic between un-equal servers, so the less powerful one may only receive 25% of the traffic, for example.
 
 ## Networking Lab (45 mins)
 

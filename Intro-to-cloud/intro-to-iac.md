@@ -161,7 +161,7 @@ Deployment errors can also be viewed using CLI commands in your terminal, this i
 
 The CLI has a steeper learning curve, but as you've seen with Linux/Bash, it can be quicker, less prone to errors, and more powerful through automation and scripting.
 
-However, you don't get the tips and prompts provided by the GUI, some services even give you guides and flowchart so you can visualise your infrastructure.
+However, the GUI provides tips and prompts, some services even give you guides and flowchart so you can visualise your infrastructure.
 
 You don't get any of this in the CLI, so we need to be a bit clearer up front about how things work, and plan out the actions we need to do.
 
@@ -173,8 +173,8 @@ This is how we deploy our CloudFormation template
 - The Deployment bucket can be used to store any number of templates for different stacks.
 - When CloudFormation is triggered to perform a deployment via the CLI, it can retrieve the required template from the bucket.
 
->Notes: The deployment bucket is not part of our stack, it exists before the stack is deployed. It may have been created manually, or via a different IaC template. 
->
->When you trigger CloudFormation via CLI, it does not "perform" or orchestrate the deployment; the CLI calls the AWS CloudFormation API (which runs inside AWS) to do a deployment, and where the template is found.
->
+The deployment bucket is not part of our stack, it exists before the stack is deployed. It may have been created manually, or via a different IaC template. 
+
+When you trigger CloudFormation via CLI, it does not "perform" or orchestrate the deployment; the CLI calls the AWS CloudFormation API (which runs inside AWS) to do a deployment, and where the template is found.
+
 >The management console does allow you to simply upload a local file.

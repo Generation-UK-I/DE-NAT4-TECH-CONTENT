@@ -17,8 +17,6 @@ Beyond making computing resources more accessible, there are lots of benefits to
 
 ### Data Centers
 
-![dc](./img/datacenter.jpg)
-
 Although we can install our IT hardware anywhere we want, many small businesses will start by deploying all of their servers and infrastructure equipment in a 'server cupboard' or small room. This may suffice for the short term, but as the organisation grows you quickly hit problems. You may not have the space to continue adding hardware; As your requirements grow the premises may require significant changes to the building to accommodate things like HVAC for all of the servers, higher capacity electrical infrastructure, and simply adding more users with desktops/laptops requiring additional network connections or wireless networks to be deployed.
 
 A data center is simply a building which is custom designed for installing IT infrastructure. The focus is not upon designing a building which makes humans happy, with break rooms, and canteens, etc. It's designed to make computers happy, with extensive networking, power, cooling, easy access, everything a server needs.
@@ -27,7 +25,7 @@ A data center is simply a building which is custom designed for installing IT in
 
 Data centers, especially those operated by cloud service providers, are highly secure, all staff should be highly vetted, and even the locations are not really publicly disclosed. This is because they need their customers to trust that their assets and resources are safe. Nobody, not even the cloud provider, should be able to access a customer's data.
 
-**Task**: Spend 15 minutes exploring this [virtual tour of a data center](https://datacenters.microsoft.com/tour/lobby/)
+**Task**: Spend 15 minutes exploring this [virtual tour of a data center](https://datacenters.microsoft.com/globe/explore/datacenter/)
 
 ### Cloud Billing
 
