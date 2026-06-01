@@ -283,9 +283,9 @@ Lets revisit our Mystery Shopper target setup:
 
 ![data-academy-pipeline-example](img/data-academy-pipeline-example.e2e.png)<!-- .element: class="centered" height="500px" -->
 
-`As a` SuperCafe senior manager
-`I want` the Mystery Shopper data processed automatically
-`So that` the data can be analysed
+`As a` SuperCafe senior manager  
+`I want` the Mystery Shopper data processed automatically  
+`So that` the data can be analysed  
 `And` the pipeline can run daily
 
 ### Architecture
@@ -343,20 +343,21 @@ To complete our next story we need to start from the previous `etl-stack.yml` fi
 Additionally, our task is to understand CloudFormation deployment, so we don't need to dissect the Lambda function code, this is also provided, along with some sample data.
 
 - [deploy.sh](./handouts/cfn-lambda/deploy.sh)
-- [etl-stack.yml](./handouts/cfn-lambda/etl-stack.yml)
+- [etl-stack.yml](./handouts/cfn-lambda/etl-stack.yml) <-- *Your next task is to complete this template*
+- [mystery_shop_etl_lambda.py](./handouts/cfn-lambda/mystery_shop_etl_lambda.py)
 - [sample data](./handouts/cfn-lambda/mystery_shops_2024-03.csv)
 
 ### Networking
 
 The network over which the components of our app will communicate, already exists - here's a recap of it from a previous session.
 
-We will add settings in the upcoming slides to put our Lambda in the same place as the Redshift cluster, so it can access it:
+We will add settings later on to put our Lambda in the same place as the Redshift cluster, so it can access it:
 
 ![data-academy-pipeline-example-shared-03.png](./img/data-academy-pipeline-example-shared-03.png)<!-- .element: class="centered" height="500px" -->
 
 ### Next steps
 
-Our etl-stack.yml requires a **parameter** for `NetworkStackName`, so we know where to put the lambda (so that in a later session it can talk to RedShift).
+Starting from the provided `etl-stack.yml` (or your own if it worked), it requires a **parameter** for `NetworkStackName`, so we know where to put the lambda (so that in a later session it can talk to RedShift).
 
 Add a section to the template...
 
@@ -388,7 +389,7 @@ Parameters:
 
 ---
 
-Next we require a Lambda with a dynamic name (passed from `YourName`), so all our lambdas are unique. It should be...
+Next we require a Lambda with a dynamic name (passed from `$YourName`), so all our lambdas are unique. It should be...
 
 - In the `Resources` section
 - With a logical name like `EtlLambdaFunction`
