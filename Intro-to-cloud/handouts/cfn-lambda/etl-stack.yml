@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  Mystery Shopper ETL pipeline example for AWS week in the Data Engineering Software Academy
+
+Parameters:
+  YourName:
+    Type: String
+    Description: Enter your name in format 'first-last' to customise the way your resources are named
+
+  # TODO: Add NetworkStackName
+
+Resources:
+  # TODO: Add EtlLambdaFunction:
+
+  ShopperRawDataBucket:
+    Type: AWS::S3::Bucket
+    # TODO: Add DependsOn
+    Properties:
+      BucketName: !Sub '${YourName}-shopper-raw-data'
+      PublicAccessBlockConfiguration: # do not allow any public access
+        BlockPublicAcls: True
+        BlockPublicPolicy: True
+        IgnorePublicAcls: True
+        RestrictPublicBuckets: True
+      # TODO: Add NotificationConfiguration: # trigger the lambda when a file is put in
+      Tags:
+        - Key: Name
+          Value: !Sub '${YourName}-shopper-raw-data'
+
+  # TODO: Add ShopperRawDataBucketPermission: # allow the triggered lambda to read from the bucket
+
+  ShopperRawDataBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ShopperRawDataBucket
+      PolicyDocument:
+        Statement:
+          - Sid: "AllowSSLRequestsOnly"
+            Action: "s3:*"
+            Principal: "*"
+            Effect: "Deny" # Block if...
+            Resource:
+              - !Sub "arn:aws:s3:::${YourName}-shopper-raw-data"
+              - !Sub "arn:aws:s3:::${YourName}-shopper-raw-data/*"
+            Condition:
+              Bool:
+                aws:SecureTransport: "false" # ...the request is not HTTPS

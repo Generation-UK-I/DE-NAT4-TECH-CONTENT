@@ -80,7 +80,7 @@ Typically the environment name (`Dev`, `Test`, `Production`) would be passed as 
 
 ### A CloudFormation Template
 
-CloudFormation supports writing templates in JSON and YAML (YAML Ain't Markup Language), the following is YAML:
+CloudFormation supports writing templates in JSON and YAML (YAML Ain't Markup Language), the following template creates an S3 Bucket `resource` called `academy-de-example-bucket`:
 
 ```yaml
 AWSTemplateFormatVersion: "2010-09-09" # <-- Version
@@ -92,8 +92,6 @@ Resources: # <-- Resources block
     Properties: # <-- Resource Properties
       BucketName: academy-de-example-bucket
 ```
-
-The above template creates a S3 Bucket `resource` called `academy-de-example-bucket`
 
 - `AWSTemplateFormatVersion`: (Optional)
   - Always "2010-09-09" (only one version exists 🤷‍♀️)
@@ -144,14 +142,14 @@ The above template has a problem. Errors in deployment can be viewed via the web
 
 **Remember:** Identifying and understanding errors is a CRITICAL SKILL for an Engineer
 
-Deploy the above template and find deployment errors under the Events tab.
-
 Why does it fail?
 
 <details><summary>Reveal</summary>Bucket creation will fail because bucket names cannot contain underscores '_'
 </details>
 
 ![stack-deployment-error](img/stack-deployment-error.png)<!-- .element: class="centered" -->
+
+>Note: as of 2026 the CloudFormation console interface has changed, and does not look like this, but the same info is still provided.
 
 Reasons for failure can be determined from the 'Events' pane in the console.
 
@@ -173,8 +171,145 @@ This is how we deploy our CloudFormation template
 - The Deployment bucket can be used to store any number of templates for different stacks.
 - When CloudFormation is triggered to perform a deployment via the CLI, it can retrieve the required template from the bucket.
 
-The deployment bucket is not part of our stack, it exists before the stack is deployed. It may have been created manually, or via a different IaC template. 
+The deployment bucket is not part of our stack, it exists before the stack is deployed. It may have been created manually, or via a different IaC template.
 
 When you trigger CloudFormation via CLI, it does not "perform" or orchestrate the deployment; the CLI calls the AWS CloudFormation API (which runs inside AWS) to do a deployment, and where the template is found.
 
->The management console does allow you to simply upload a local file.
+>The management console does allow you to simply upload a local template file.
+
+### Sample Template Breakdown
+
+Here is a more complex template which is broken down below so that you can see examples of additional services. It is not necessary to deploy it.
+
+```yaml
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template to deploy a VPC with public and private subnets, security groups, and EC2 instances.
+
+Resources:
+  # VPC
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties: 
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: MyVPC
+
+  # Internet Gateway for Public Subnet
+  MyInternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref MyVPC
+      InternetGatewayId: !Ref MyInternetGateway
+
+  # Public Subnet
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: PublicSubnet
+
+  # Private Subnet
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      Tags:
+        - Key: Name
+          Value: PrivateSubnet
+
+  # Route Table for Public Subnet
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: PublicRouteTable
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref MyInternetGateway
+
+  PublicSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet
+      RouteTableId: !Ref PublicRouteTable
+
+  # Security Group for Public Subnet
+  PublicSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP and SSH access
+      VpcId: !Ref MyVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+  # Security Group for Private Subnet
+  PrivateSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow SSH access
+      VpcId: !Ref MyVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+  # EC2 Instance in Public Subnet
+  PublicEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      KeyName: my-key
+      SecurityGroupIds:
+        - !Ref PublicSecurityGroup
+      SubnetId: !Ref PublicSubnet
+      ImageId: ami-0c55b159cbfafe1f0  # Choose an appropriate AMI ID for your region
+
+  # EC2 Instance in Private Subnet
+  PrivateEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      KeyName: my-key
+      SecurityGroupIds:
+        - !Ref PrivateSecurityGroup
+      SubnetId: !Ref PrivateSubnet
+      ImageId: ami-0c55b159cbfafe1f0  # Choose an appropriate AMI ID for your region
+
+Outputs:
+  PublicInstanceId:
+    Description: Instance ID of the EC2 instance in the public subnet
+    Value: !Ref PublicEC2Instance
+
+  PrivateInstanceId:
+    Description: Instance ID of the EC2 instance in the private subnet
+    Value: !Ref PrivateEC2Instance
+```
+
+TODO

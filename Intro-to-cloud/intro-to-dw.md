@@ -42,7 +42,7 @@ This is the architecture of a typical data warehouse
 - Like a front-end client layer
 - Holds different types of querying and reporting tools for which client applications can perform data analysis
 
-##Business Intelligence
+## Business Intelligence
 
 > Business intelligence (BI) is software that ingests business data and presents it in user-friendly views such as reports, dashboards, charts and graphs. Analysing this data helps businesses gain actionable insights and inform decision-making.
 >

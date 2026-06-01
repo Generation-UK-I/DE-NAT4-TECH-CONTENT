@@ -1,0 +1,80 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  Mystery Shopper ETL pipeline example for AWS week in the Data Engineering Software Academy
+
+Parameters:
+  YourName:
+    Type: String
+    Description: Enter your name in format 'first-last' to customise the way your resources are named
+
+  NetworkStackName:
+    Type: String
+    Default: project-networking
+    Description: Network stack with VPC containing Redshift instance
+
+Resources:
+  EtlLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${YourName}-shopper-etl-lambda'
+      Runtime: python3.12
+      Handler: mystery_shop_etl_lambda.lambda_handler # file_name.function_name
+      Role: !Sub 'arn:aws:iam::${AWS::AccountId}:role/lambda-execution-role' # security rule
+      Timeout: 30 # max running time in seconds (make as low as possible)
+      ReservedConcurrentExecutions: 10 # how many can run at once
+      Code: ./src # use this folder for the zip of lambda code
+      VpcConfig: # use the same networking as RedShift
+        SecurityGroupIds:
+          - Fn::ImportValue:
+              !Sub '${NetworkStackName}-VPCSGID'
+        SubnetIds:
+          - Fn::ImportValue:
+              !Sub '${NetworkStackName}-PrivateSubnet0ID'
+      Tags:
+        - Key: Name
+          Value: !Sub '${YourName}-shopper-etl-lambda'
+
+  ShopperRawDataBucket:
+    Type: AWS::S3::Bucket
+    DependsOn:
+      - ShopperRawDataBucketPermission
+      - EtlLambdaFunction
+    Properties:
+      BucketName: !Sub '${YourName}-shopper-raw-data'
+      PublicAccessBlockConfiguration: # do not allow any public access
+        BlockPublicAcls: True
+        BlockPublicPolicy: True
+        IgnorePublicAcls: True
+        RestrictPublicBuckets: True
+      NotificationConfiguration: # trigger the lambda when a file is put in
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:*
+            Function: !GetAtt EtlLambdaFunction.Arn
+      Tags:
+        - Key: Name
+          Value: !Sub '${YourName}-shopper-raw-data'
+
+  ShopperRawDataBucketPermission: # allow the triggered lambda to read from the bucket
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref EtlLambdaFunction
+      Principal: s3.amazonaws.com
+      SourceArn: !Sub 'arn:aws:s3:::${YourName}-shopper-raw-data'
+
+  ShopperRawDataBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ShopperRawDataBucket
+      PolicyDocument:
+        Statement:
+          - Sid: "AllowSSLRequestsOnly"
+            Action: "s3:*"
+            Principal: "*"
+            Effect: "Deny" # Block if...
+            Resource:
+              - !Sub "arn:aws:s3:::${YourName}-shopper-raw-data"
+              - !Sub "arn:aws:s3:::${YourName}-shopper-raw-data/*"
+            Condition:
+              Bool:
+                aws:SecureTransport: "false" # ...the request is not HTTPS

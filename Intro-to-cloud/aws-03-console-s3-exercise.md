@@ -8,43 +8,15 @@ Use the AWS CLI in your terminal to perform the following actions. You will need
 
 NB: Unless AWS_PROFILE is already set in your environment, make sure to put `--profile your-profile-name` at the end of every command to specify your personal profile.
 
->DE-NAT4 UPDATE: Previously your course was designed around WSL (Windows Subsystem for Linux), which has some benefits, but some drawbacks too, in some cases it makes things harder.
->
->A full Linux VM is more similar to production environments, however, some of the existing guidance is based around the previous setup, so please excuse any confusion as updates are being made.
-
-### Part 1.A Log into AWS (Windows)
+### Part 1.A Log into AWS
 
 - Open a terminal in the [handouts](../handouts/) folder
-  - If using Windows this can be in Powershell
+    - If using Windows this can be in Powershell
 - Log in depending on your AWS login method
 - Run
-  - Either `aws sso login --profile <your-profile-name>`
-  - or `aws-azure-login --profile <you-profile-name>`
-  - or use your alias
-
-### Part 1.A Log into AWS (Linux)
-
-To complete the lab using Linux Bash we will need to copy the required files into our VM, we can do using the Secure Copy Protocol.
-
-To copy the files you need to ensure your VM is up, and you can connect via SSH with `ssh centos@[VM_IP]`, then:
-
-- Open your Windows terminal in the same directory as the required files (`index.html` and `error.html`)
-
-The format of the SCP command is quite simple:
-
-`scp [source] [destination]`
-
-The destination is the remote VM, so 'destination' needs to include your username, and the path within the VM to save the file.
-
-Copy the files by running:
-
-`scp index.html centos@[VM_IP_ADDRESS]:/home/centos/`
-
-`scp error.html centos@[VM_IP_ADDRESS]:/home/centos/`
-
-Once done confirm the files have been copied by running `ls` in your Linux home directory.
-
-With the AWS CLI installed, and your required files copied, you can now proceed with the rest of the lab.
+    - Either `aws sso login --profile <your-profile-name>`
+    - or `aws-azure-login --profile <you-profile-name>`
+    - or use your alias
 
 ### Part 1.B Use AWS CLI
 

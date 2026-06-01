@@ -1,0 +1,6 @@
+StoreID,StoreName,MysteryShopperID,MysteryShopperName,StoreType,NumberOfStoreEmployees,VisitDate,StartTime,EndTime,OverallScore
+1487,Leeds,22,Rory Gilmore,Free Standing,"12",13/03/2024,10:05,10:30,3
+1456,London,48,Lane Kim,Mall,"6",21/03/2024,13:45,15:00,2
+1403,Manchester,32,Luke Danes,Mall,"7",22/03/2024,10:30,10:45,5
+1482,Newcastle,32,Luke Danes,Mall,"7",22/03/2024,14:02,14:17,5
+1499,Edinburgh,22,Rory Gilmore,Kiosk,"4",19/03/2024,15:58,16:20,4
