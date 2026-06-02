@@ -110,12 +110,6 @@ Resources: # <-- Resources block
     - Public or Private access to bucket files
     - Use of the bucket to host a website
 
-TASK: Make your own YAML file called [something].yml, copy the above text into it, save it, and deploy the bucket with CloudFormation by manually uploading it. 
-
-Once complete, verifiy your bucket is there, then delete your stack.
-
-### Parameters
-
 ```yaml
 Parameters:
   YourName:
