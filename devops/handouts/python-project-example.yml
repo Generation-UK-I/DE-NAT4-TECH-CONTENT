@@ -1,0 +1,32 @@
+# Name your job/action
+name: Python application
+# When to run this job
+on: [push]
+
+jobs:
+    build:
+    # Which operating system to test on - e.g. "macos-latest, ubuntu-latest, windows-latest"
+    runs-on: [ ubuntu-latest ]
+
+    # The steps to run in the job
+    steps:
+        # Checkout code from github
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+        # Install python
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+            python-version: [ 3.10 ]
+
+        # Run pip to install all packages/dependencies
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+        # Further tasks
+      - name: Another task
+        run : echo "run something here, like your unit tests"
+
+      - name: Another Another task
+        run: echo "run another command"

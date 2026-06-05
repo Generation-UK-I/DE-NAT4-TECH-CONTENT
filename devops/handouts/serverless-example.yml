@@ -1,0 +1,35 @@
+
+service: project-name
+
+provider:
+  name: aws
+  stage: dev
+  region: eu-west-1
+  runtime: python3.8
+
+plugins:
+  - serverless-python-requirements
+  - serverless-iam-roles-per-function
+
+package:
+  individually: true
+  exclude:
+    - node_modules/**
+    - local_*
+
+functions:
+  my-function:
+    handler: handler.start
+    module: my_module
+    include:
+      - my_module
+    timeout: 30
+    memorySize: 1024
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - s3:GetObject
+          - s3:ListBucket
+        Resource:
+          - arn:aws:s3:::my-bucket
+          - arn:aws:s3:::my-bucket
