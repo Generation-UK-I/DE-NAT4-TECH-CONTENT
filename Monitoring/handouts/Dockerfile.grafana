@@ -1,0 +1,5 @@
+FROM docker.io/grafana/grafana:main
+
+# Install plugins we need
+# See https://grafana.com/grafana/plugins/yesoreyeram-infinity-datasource/?tab=overview
+RUN grafana cli plugins install yesoreyeram-infinity-datasource

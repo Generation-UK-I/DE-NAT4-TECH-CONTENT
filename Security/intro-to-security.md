@@ -78,13 +78,31 @@ Some of the actions that occur in the Prevention phase include:
 
 In the realm of security, short of completely disconnecting a system from all networks (known as air-gapping) you can never guarantee that your environment is completely secure.
 
-In the world of cyber security we have white hats, and black hats. White people are the 'good team', they are often employees of an organisation, or work for 'bug-bounties' where they are paid for discovering and sharing vulnerabilities with the relevant company/developers.
+In cyber security we have white hats, and black hats. White people are the 'good team', they are often employees of an organisation, or work for 'bug-bounties' where they are paid for discovering and sharing vulnerabilities with the relevant company/developers.
 
 Black Hats are the malicious parties, who are looking to identify vulnerabilities, but when they do they keep them secret, and either use them themselves, or sell the exploit on the black market. These vulnerabilities are known as **Zero-Day exploits**.
 
 Such vulnerabilities are not yet known to the wider industry, so you cannot protect against them!
 
-Two key components for detecting
+>Due to the existence of Zero-Day exploits, you can never claim to be completely safe. Cyber security professionals must constantly keep their knowledge, and the environments they're protecting, up to date.
+
+Two key activities for detecting threats are monitoring and logging.
+
+#### Monitoring
+
+Monitoring you environment is crucial for gaining insight into the health and performance of your resources. There are a huge number of metrics that you can monitor, which will vary based on the type of resource, and the workload.
+
+For servers we may be interested in the component utilisation such as CPU, RAM, storage space, etc. For network devices it may be traffic levels; For APIs you may monitor request rates; For your applications it might be response times, number of executions, resource consumption, and so on.
+
+These metrics may indicate a potential threat, or 
+
+Each of the main cloud providers integrates their services with a built in monitoring service, in the case of AWS their monitoring service is called CloudWatch. Of course many third party solutions are also available.
+
+
+
+Monitoring tools give you the ability to create dashboards which can aggregate all of the metrics you're interested in to one location, or 'pane of glass'.
+
+
 
 ### Response
 
