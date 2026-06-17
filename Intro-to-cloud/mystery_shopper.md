@@ -101,7 +101,7 @@ As you have seen, when you deployed the AWS CLI we gained a whole range of AWS s
 
 This works fine for individual stacks, but in complex enterprise environments deployments may comprise multiple stacks, along with various files, data, function code, and other resources.
 
-For this reason it is common to create a Bask script which can handle the CloudFormation deployment automatically, including passing through any required files and values, as well as embedding some progress messages and error handling.
+For this reason it is common to create a Bash script which can handle the CloudFormation deployment automatically, including passing through any required files and values, as well as embedding some progress messages and error handling.
 
 Our deployment, and the deployment script, will become complex, therefore we have provided it for you for each story so it will reliably work, and you won't need to worry about it during any necessary troubleshooting.
 
