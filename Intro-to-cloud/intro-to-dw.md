@@ -1,6 +1,6 @@
 # Introduction to Data Warehouses
 
-ALthough the lines are blurring as NoSQL databases continue to evolve, traditionally SQL databases are turned to when you want to carry out transaction operations. However, if you want to carry out analytics workloads, SQL can meet some of our needs but it's not the best at it, really we want a system that is dedicated to that task.
+Although the lines are blurring as NoSQL databases continue to evolve, traditionally SQL databases are turned to when you want to carry out transaction operations. However, if you want to carry out analytics workloads, SQL can meet some of our needs but it's not the best at it, really we want a system that is dedicated to that task.
 
 OLTP and OLAP are two models of processing data:
 
