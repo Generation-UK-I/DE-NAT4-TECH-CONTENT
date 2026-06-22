@@ -251,7 +251,7 @@ The first section, containing the template version, description, and TeamName pa
 
 This parameter references a stack containing a VPC and associated components which has been deployed for you called `project-networking`.
 
-The `EtlLambdaFunction` resource is quite long so I've split it in two: 
+The `EtlLambdaFunction` resource is quite long so I've split it in two:
 
 ```yaml
 Resources:
