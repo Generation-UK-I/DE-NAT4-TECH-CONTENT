@@ -1,0 +1,160 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  Mystery Shopper ETL pipeline example for AWS week in the Data Engineering Software Academy
+
+Parameters:
+  YourName:
+    Type: String
+    Description: Enter your name in format 'first-last' to customise the way your resources are named
+  TeamName:
+    Type: String
+    Description: Enter the team name you want to use for DB connections
+    Default: la-vida-mocha
+  NetworkStackName:
+    Type: String
+    Default: project-networking
+    Description: Network stack with VPC containing Redshift instance
+  LatestAmiId:
+    # Use public Systems Manager Parameter
+    # See https://aws.amazon.com/blogs/compute/query-for-the-latest-amazon-linux-ami-ids-using-aws-systems-manager-parameter-store/
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+    Description: Automatically look up the latest AMI for Amazon Linux v2
+
+  # so our EC2 can access other things:
+  # TODO add EC2InstanceProfileRoleName
+  # TODO add EC2InstanceIngressIp
+  # TODO add EC2UserData
+
+Resources:
+  EtlLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${YourName}-shopper-etl-lambda'
+      Runtime: python3.12
+      Handler: mystery_shop_etl_lambda.lambda_handler
+      Role: !Sub 'arn:aws:iam::${AWS::AccountId}:role/lambda-execution-role'
+      Timeout: 30
+      ReservedConcurrentExecutions: 10
+      Code: ./src # use this folder for the zip of lambda code
+      VpcConfig:
+        SecurityGroupIds:
+          - Fn::ImportValue:
+              !Sub '${NetworkStackName}-VPCSGID'
+        SubnetIds:
+          - Fn::ImportValue:
+              !Sub '${NetworkStackName}-PrivateSubnet0ID'
+      Tags:
+        - Key: Name
+          Value: !Sub '${YourName}-shopper-etl-lambda'
+      Environment:
+        Variables:
+          SSM_PARAMETER_NAME:
+            Fn::Join:
+            - '_'
+            - Fn::Split:
+              - '-'
+              - !Sub '${TeamName}_redshift_settings'
+
+  ShopperRawDataBucket:
+    Type: AWS::S3::Bucket
+    DependsOn:
+      - ShopperRawDataBucketPermission
+      - EtlLambdaFunction
+    Properties:
+      BucketName: !Sub '${YourName}-shopper-raw-data'
+      PublicAccessBlockConfiguration: # do not allow any public access
+        BlockPublicAcls: True
+        BlockPublicPolicy: True
+        IgnorePublicAcls: True
+        RestrictPublicBuckets: True
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:*
+            Function: !GetAtt EtlLambdaFunction.Arn
+      Tags:
+        - Key: Name
+          Value: !Sub '${YourName}-shopper-raw-data'
+
+  ShopperRawDataBucketPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref EtlLambdaFunction
+      Principal: s3.amazonaws.com
+      SourceArn: !Sub 'arn:aws:s3:::${YourName}-shopper-raw-data'
+
+  ShopperRawDataBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ShopperRawDataBucket
+      PolicyDocument:
+        Statement:
+          - Sid: "AllowSSLRequestsOnly"
+            Action: "s3:*"
+            Principal: "*"
+            Effect: "Deny" # Block if...
+            Resource:
+              - !Sub "arn:aws:s3:::${YourName}-shopper-raw-data"
+              - !Sub "arn:aws:s3:::${YourName}-shopper-raw-data/*"
+            Condition:
+              Bool:
+                aws:SecureTransport: "false" # ...the request is not HTTPS
+
+  # TODO: add GrafanaEc2Instance:
+
+  GrafanaEC2LaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: !Sub '${YourName}-shopper-ec2-grafana-launch-template'
+      VersionDescription: '01' # Just changing this will make CF replace your EC2
+      LaunchTemplateData:
+        UserData: !Ref EC2UserData # pull in the userdata file contents
+        IamInstanceProfile:
+          Name: !Ref EC2InstanceProfileRoleName # sets up the Instance Profile for Security
+        MetadataOptions: # Options for what other AWS services we can use
+          HttpEndpoint: enabled
+          HttpProtocolIpv6: disabled
+          HttpPutResponseHopLimit: 10
+          # Make IMDSv2 (Metadata Service v2) optional until all Grafana plugins support it.
+          HttpTokens: optional
+          InstanceMetadataTags: enabled
+        Monitoring:
+          Enabled: True # Turn on extra Cloudwatch monitoring
+        BlockDeviceMappings: # the hard disk
+          - DeviceName: /dev/xvda
+            Ebs:
+              VolumeType: gp3
+              VolumeSize: 8
+              Encrypted: true
+              DeleteOnTermination: true
+
+  # so we can control access
+  GrafanaEC2InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Sets ingress and egress rules for HTTP, HTTPS and SSH
+      Tags:
+        - Key: Name
+          Value: !Sub '${YourName}-shopper-ec2-grafana'
+      VpcId:
+        Fn::ImportValue:
+          !Sub '${NetworkStackName}-VPCID'
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: !Sub '${EC2InstanceIngressIp}/32' # Only our own laptops
+      - IpProtocol: tcp
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 0.0.0.0/0
+      SecurityGroupEgress: # Allow HTTP and HTTPS back out to us (http) and AWS (https)
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: !Sub '${EC2InstanceIngressIp}/32' # Only our own laptops
+      - IpProtocol: tcp
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 0.0.0.0/0

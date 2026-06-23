@@ -1,0 +1,6 @@
+# ignore python dependancy files so they don't get saved in github
+bin
+jmespath*
+psycopg2*
+# always include the python files
+!*.py
