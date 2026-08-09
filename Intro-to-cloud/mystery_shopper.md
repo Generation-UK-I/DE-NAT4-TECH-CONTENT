@@ -153,7 +153,7 @@ Here's what the script does:
 
 ### The CloudFormation Template
 
-Here is the `etl-stack.yml` file, for easier editing you may wish to work with it in VSC, thenb copy it to your Linux VM when you're ready to deploy.
+Here is the `etl-stack.yml` file, for easier editing you may wish to work with it in VSC, then copy it to your Linux VM when you're ready to deploy.
 
 ```yaml
 AWSTemplateFormatVersion: 2010-09-09
