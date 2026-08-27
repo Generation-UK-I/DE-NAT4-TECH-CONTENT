@@ -49,17 +49,19 @@ volumes:
 
 ### Pull the Models
 
-Launch your stack using `docker compose up -d`. Once healthy, execute the following commands to instruct the Ollama container to download your embedding model and your LLM:  
+Launch your stack using `sudo docker compose up -d`, the Ollama container is ~3GB so may take a while.
+
+Once healthy, execute the following commands to instruct the Ollama container to download your embedding model and your LLM:  
 
 ```bash
 # Pull the text embedding model (produces a 768-dimension vector)
-docker exec -it ollama_service ollama pull nomic-embed-text
+sudo docker exec -it ollama_service ollama pull nomic-embed-text
 
 # Pull the lightweight language model for text generation
-docker exec -it ollama_service ollama pull llama3.2
+sudo docker exec -it ollama_service ollama pull llama3.2
 ```
 
->The embedding model is <300MB, but the language model is ~3GB, so may take a little while depending on your internet connection bandwidth.
+>The embedding model is <300MB, but the language model is ~2GB, so may take a little while depending on your internet connection bandwidth.
 
 ## The Python Core Implementation
 
@@ -165,6 +167,10 @@ if __name__ == "__main__":
     print(f"Question: {unrelated_question}")
     print(f"Answer: {query_rag(unrelated_question)}")
 ```
+
+Run your RAG pipeline with `python rag_pipeline.py`
+
+It may take a couple of minutes depending on the resources allocated to your VM, but you should get a response answering the questions near the bottom of the python file. If so try adding additional `internal_docs` and questions against those docs.
 
 ### Key Points
 
